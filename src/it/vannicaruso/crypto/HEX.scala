@@ -7,15 +7,22 @@ package it.vannicaruso.crypto
  */
 class HEX(val hex: String){
   import HEX._
+  /*requirement is that it ha an hex string inside*/
+  require(check(hex),"Not Hex String!!! ->" + hex)
+
   /*making xor*/
-  def xor(that: String) =
-    byte_array_to_hex(xor_byte_array(hex_to_byte_array(hex), hex_to_byte_array(that)))
+  def xor(that: HEX) = new HEX(valueOf(xor_byte_array(hex_to_byte_array(hex), hex_to_byte_array(that.hex))))
+
+  def toASCII = byte_array_to_hex(hex_to_byte_array(hex))
+
+  override def toString = hex.toLowerCase
 }
 
 
 
 object HEX {
   implicit def string2HEX(s: String) = new HEX(s)
+  val hexDigits = Set[Char]() ++ "0123456789abcdefABCDEF".toArray
   /**
    * XOR tra 2 byte
    * @param b1 byte 1
@@ -40,6 +47,25 @@ object HEX {
    */
   private def hex_to_byte_array(s: String) = s.sliding(2,2).map{Integer.parseInt(_,16).toByte}.toArray
 
+  /**
+   *
+   * @param a
+   * @return
+   */
   private def byte_array_to_hex (a: Array[Byte]) = new String(a)
+
+  /**
+   *
+   * @param s
+   * @return
+   */
+  def stringToHex(s :String) =
+    s.getBytes.map{ b => String.format("%02X", java.lang.Byte.valueOf(b)) }.mkString.toLowerCase
+
+  private def check(s: String) =
+    if (!s.forall(char => hexDigits.contains(char))) false else true
+
+  def valueOf(buf: Array[Byte]): String = buf.map("%02X" format _).mkString
+
 
 }
