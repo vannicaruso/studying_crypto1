@@ -67,5 +67,6 @@ object HEX {
 
   def valueOf(buf: Array[Byte]): String = buf.map("%02X" format _).mkString
 
+  def apply(s: String) = new HEX(s)
 
 }
