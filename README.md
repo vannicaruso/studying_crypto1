@@ -23,7 +23,9 @@ val GUESS = ...
 traverseList(ciphers).foreach{searchForReadableText(_, stringToHex(GUESS) ).foreach(println(_))}
 ```
 3) retry with other guesses from readable test from above and spread the guess trying to complete the statements
+
 4) once you have an entire statement xor it with the ciphertext to obtain the key
+
 5) once you have the key
 ```scala
 ciphers.foreach((h: HEX) => println((k xor h).toASCII))
